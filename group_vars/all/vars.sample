@@ -1,0 +1,6 @@
+# sites must remain named as such since it is being used within the tasks/main.yml
+# myapp1 can be changed and is only being used as an example. 
+#sites:
+#  myapp1:
+#    doc_root: /var/www/html
+#    server_name: example.com www.example.com

@@ -1,0 +1,47 @@
+---
+- name: install heartbeat and nginx components
+  apt: name="{{ item }}" state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - heartbeat
+    - nginx
+
+- name: configure heartbeat
+  template: src=ha.cf dest=/etc/ha.d/ha.cf mode=0644
+
+- name: configure authkey
+  template: src=authkeys dest=/etc/ha.d/authkeys mode=0600
+
+- name: configura haresources
+  template: src=haresources dest=/etc/ha.d/haresources
+
+- name: install floating ip assigner
+  template: src=assign-ip dest=/usr/local/bin/assign-ip mode=0755
+
+- name: install floating ip manager
+  template: src=floatip dest=/etc/init.d/floatip mode=0755
+
+- name: start heartbeat service
+  service: name=heartbeat state=started enabled=yes
+
+- name: configure nginx service
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf mode=0644
+
+- name: get active sites
+  shell: ls -1 /etc/nginx/sites-enabled
+  register: active
+
+- name: disable unwanted sites
+  file: path=/etc/nginx/sites-enabled/{{ item }} state=absent
+  with_items: "{{ active.stdout_lines }}"
+  when: item not in sites
+  notify: restart nginx
+
+- name: configure server block
+  template: src=server_block dest=/etc/nginx/sites-available/{{ item.key }} mode=0644
+  with_dict: "{{ sites }}"
+  notify: restart nginx
+
+- name: enable new site
+  file: src=/etc/nginx/sites-available/{{ item.key }} dest=/etc/nginx/sites-enabled/{{ item.key }} state=link
+  with_dict: "{{ sites }}"
+  notify: restart nginx

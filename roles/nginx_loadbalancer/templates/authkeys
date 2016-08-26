@@ -1,0 +1,2 @@
+auth1
+1 sha1 {{ lb_auth_key }}

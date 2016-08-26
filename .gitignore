@@ -1,0 +1,11 @@
+.DS_Store
+site.retry
+*.tfstate.*
+*.tfstate
+*.tfvars
+group_vars/all/load_balancer
+group_vars/all/web_node
+group_vars/all/vars
+group_vars/all/keys
+*.pyc
+.key.txt
