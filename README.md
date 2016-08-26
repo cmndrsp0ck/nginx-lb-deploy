@@ -50,7 +50,7 @@ Once you're ready, use `terraform apply` to build the Droplets and floating IP. 
 
 We're ready to begin configuring the Droplets. Execute the Ansible playbook to configure your Droplets by running the following
 
-    ansible-playbook -i /usr/local/bin/terraform-inventory site.yml`
+    ansible-playbook -i /usr/local/bin/terraform-inventory site.yml
 
 This playbook will install and configure heartbeat, your floating IP re-assignment script, install and configure ngingx load balancers, and your backend nodes. You should see a steady output which will state the role and step at which Ansible is currently running. If there are any errors, you can easily trace it back to the correct role and section of the task.
 
