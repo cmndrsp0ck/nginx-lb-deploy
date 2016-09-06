@@ -35,7 +35,7 @@ server {
 	server_name {{ item.value.server_name }};
 
 	location / {
-	  proxy_set_header X-Real-IP $remote_addr;
+	  	proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header HOST $http_host;
 
 		# if you are using another type of server running locally and listening on specified port, use the following section.
